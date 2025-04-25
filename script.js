@@ -49,3 +49,39 @@ async function main() {
 }
 
 main();
+
+//
+//
+//
+//3) Use these APIs: https://fakestoreapi.com/users  and https://jsonplaceholder.typicode.com/users Fetch data from both endpoints and display the combined data only if both promises are fulfilled successfully.
+
+async function fetchCombinedData() {
+  const url1 = "https://fakestoreapi.com/users";
+  const url2 = "https://jsonplaceholder.typicode.com/users";
+
+  const response1 = fetch(url1).then((res) => res.json());
+  const response2 = fetch(url2).then((res) => res.json());
+  const combinedData = await Promise.all([response1, response2]);
+  console.log(combinedData);
+}
+
+fetchCombinedData();
+
+//4) Create a function that logs mouse coordinate after mouse stop moving. use debauncer technique.
+
+function debouncer(cb, ms) {
+  let interval;
+  return (...args) => {
+    clearInterval(interval);
+    interval = setTimeout(() => {
+      cb(...args);
+    }, ms);
+  };
+}
+function logMouseCoordinates(event) {
+  console.log(`Mouse stopped at: X=${event.clientX}, Y=${event.clientY}`);
+}
+
+const debouncedMouseCord = debouncer(logMouseCoordinates, 300);
+
+document.addEventListener("mousemove", debouncedMouseCord);
