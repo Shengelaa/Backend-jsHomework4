@@ -85,3 +85,30 @@ function logMouseCoordinates(event) {
 const debouncedMouseCord = debouncer(logMouseCoordinates, 300);
 
 document.addEventListener("mousemove", debouncedMouseCord);
+
+//5) Create a Input in html, when user typing something on it you should fetch data from this API: https://dummyjson.com/products/search?q=phone as you see there is a products where you can searching something. Replace 'phone' to user typed value and display the result, use debaunce technique to optimize performance.
+//
+
+const input2 = document.querySelector("#searchBar");
+const container = document.querySelector(".container");
+input2.addEventListener(
+  "input",
+  debouncer(async (e) => {
+    container.innerHTML = "Loading...";
+    const resp = await fetch(
+      `https://api.escuelajs.co/api/v1/products?title=${e.target.value}`
+    );
+
+    const data = await resp.json();
+    console.log(data);
+
+    container.innerHTML = data
+      .map(
+        (el) =>
+          `
+        <h4>${el.title + "  " + "$" + el.price}</h4>
+        <p>${el.description}</p>`
+      )
+      .join("");
+  }, 300)
+);
